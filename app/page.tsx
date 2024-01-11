@@ -19,6 +19,9 @@ export default function page({}: Props) {
     console.log("active");
   }
 
+  function keyUpHandler(e: KeyboardEvent) {
+    setActive("");
+  }
   function keyDownHandler(e: KeyboardEvent) {
     if (isAlpha(e.key)) {
       setInput((prev) => {
@@ -41,42 +44,23 @@ export default function page({}: Props) {
 
   useEffect(() => {
     window.addEventListener("keydown", keyDownHandler);
+    window.addEventListener("keyup", keyUpHandler);
     window.addEventListener("keydown", backspaceHandler);
     window.addEventListener("keydown", submitHandler);
     window.addEventListener("keydown", activeKeyHandler);
     return () => {
       window.removeEventListener("keydown", keyDownHandler);
+      window.removeEventListener("keyup", keyUpHandler);
       window.removeEventListener("keydown", backspaceHandler);
       window.removeEventListener("keydown", submitHandler);
       window.removeEventListener("keydown", activeKeyHandler);
     };
   }, []);
 
-  useEffect(() => {
-    const index = input.length - 1;
-    if (word[index] != input[index]) {
-      disabledKeys?.add(input[index]);
-    }
-  }, [input]);
-
-  useEffect(() => {
-    console.log(active);
-    const t = setTimeout(() => {
-      if (active != "") {
-        setActive("");
-        console.log("first");
-      }
-    }, 75);
-
-    return () => {
-      clearTimeout(t);
-    };
-  }, [active]);
-
   return (
     <div>
       {input}
-      <Keyboard currentActive={active} />
+      <Keyboard currentActive={active} setInput={setInput} />
     </div>
   );
 }

@@ -4,21 +4,41 @@ type Props = {
   disabled?: boolean;
   label: string;
   active: boolean;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function Key({ disabled, label, active }: Props) {
+export default function Key({ disabled, label, active, setInput }: Props) {
   return (
-    <button
-      disabled={disabled}
-      className={`p-4 flex items-center text-center ${
-        disabled ? "bg-gray-500" : active ? "bg-gray-200" : "bg-gray-300"
-      } rounded min-w-10 min-h-10`}
-      onClick={(e) => {
-        e.preventDefault();
-        console.log(active);
-      }}
+    <div
+      className={`flex m-[3px] bg-gray-50 border-[1px] border-gray-300 justify-center align-middle p-[5px] rounded`}
     >
-      {label}
-    </button>
+      <kbd className={`key`}>
+        <button
+          className={`flex p-4 shadow-gray-400 items-center align-middle justify-center text-center ${
+            active
+              ? "bg-[#ecedef] shadow-sm "
+              : "bg-gray-100 translate-y-[-3px]"
+          } min-w-16 min-h-10 disabled:bg-gray-300 disabled:shadow-none disabled:translate-y-0 active:bg-[#ecedef] active:shadow-sm active:translate-y-0`}
+          disabled={false}
+          onClick={(e) => {
+            e.preventDefault();
+            console.log(active);
+            if (label == "Delete") {
+              setInput((prev) => {
+                return prev.slice(0, prev.length - 1);
+              });
+            } else if (label == "Enter") {
+              // TODO
+            } else {
+              setInput((prev) => {
+                return prev + label;
+              });
+            }
+          }}
+        >
+          {label}
+        </button>
+      </kbd>
+    </div>
   );
 }
