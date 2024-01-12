@@ -5,21 +5,13 @@ import Grid from "@/components/Grid";
 
 type Props = {};
 
-type Point = {
-  x: number;
-  y: number;
-};
-
 export default function page({}: Props) {
-  const [windowDimensions, setWindowDimensions] = useState<Point>({
-    x: 0,
-    y: 0,
-  });
+  const [windowWidth, setWindowWidth] = useState<number>(720);
   const [input, setInput] = useState("");
   const [currentRow, setCurrentRow] = useState<number>(0);
 
   function resizeHandler() {
-    setWindowDimensions({ x: window.innerWidth, y: window.innerHeight });
+    setWindowWidth(window.innerWidth);
   }
 
   useEffect(() => {
@@ -39,8 +31,12 @@ export default function page({}: Props) {
       {currentRow}
       <Grid input={input} currentRow={currentRow} />
       {input}
-      {windowDimensions.x >= 1024 && windowDimensions.y >= 680 && (
-        <Keyboard setInput={setInput} setCurrentRow={setCurrentRow} />
+      {windowWidth >= 1024 && (
+        <Keyboard
+          loading={windowWidth < 1024}
+          setInput={setInput}
+          setCurrentRow={setCurrentRow}
+        />
       )}
     </div>
   );
