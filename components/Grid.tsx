@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {
-  input?: string;
+  input: string[];
   currentRow?: number;
 };
 
@@ -13,6 +13,8 @@ export default function Grid({ input, currentRow }: Props) {
     ["", "", "", "", "", ""],
     ["", "", "", "", "", ""],
   ];
+
+  useEffect(() => {}, [input[currentRow || 0]]);
   return (
     <div className="w-fit mx-auto my-5">
       <div className="flex gap-x-1">
@@ -25,7 +27,7 @@ export default function Grid({ input, currentRow }: Props) {
                     key={k_}
                     className="w-20 h-20 rounded border-[1px] border-gray-400 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl"
                   >
-                    {currentRow == k_ && input?.at(k)}
+                    {input[k_][k]}
                   </div>
                 );
               })}
