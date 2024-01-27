@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import data from "@/lib/words.json";
 
 type Props = {
   input: string[];
-  currentRow?: number;
+  currentRow: number;
 };
 
 export default function Grid({ input, currentRow }: Props) {
@@ -14,7 +15,54 @@ export default function Grid({ input, currentRow }: Props) {
     ["", "", "", "", "", ""],
   ];
 
-  useEffect(() => {}, [input[currentRow || 0]]);
+  const [allowed, setAllowed] = useState<string[]>(data.allowed);
+  const [inputLength, setInputLength] = useState(input[currentRow].length);
+  const alref = useRef<string[]>();
+  const inref = useRef<string[]>();
+
+  function listener(e: KeyboardEvent) {
+    if (e.key == "²") {
+      console.log(alref.current, inref.current);
+    }
+  }
+  useEffect(() => {
+    const inputL = input[currentRow].length;
+    if (inputLength < inputL) {
+      setAllowed(
+        allowed.filter(
+          (word) =>
+            input[currentRow].toLowerCase() ==
+            word.slice(0, inputL).toLowerCase()
+        )
+      );
+      console.log("optimized lookup");
+      setInputLength(inputL);
+    } else {
+      setAllowed(
+        data.allowed.filter(
+          (word) =>
+            input[currentRow].toLowerCase() ==
+            word.slice(0, inputL).toLowerCase()
+        )
+      );
+      setInputLength(inputL);
+    }
+    console.log(allowed, input[currentRow]);
+  }, [input[currentRow]]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", listener);
+
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
+
+  useEffect(() => {
+    alref.current = allowed;
+    inref.current = input;
+  });
+
   return (
     <div className="w-fit mx-auto my-5">
       <div className="flex gap-x-1">
