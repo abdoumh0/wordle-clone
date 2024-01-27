@@ -1,12 +1,17 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import Key from "./Key";
+import Image from "next/image";
+import { Compare } from "@/lib/compare";
 
 type Props = {
   setInput: React.Dispatch<React.SetStateAction<string[]>>;
   input: string[];
+  word: string;
   setCurrentRow: React.Dispatch<React.SetStateAction<number>>;
   currentRow: number;
+  allowed: string[];
+  setPattern: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 var isAlpha = function (ch: string) {
@@ -18,11 +23,17 @@ export default function keyboard({
   setCurrentRow,
   currentRow,
   input,
+  allowed,
+  setPattern,
+  word,
 }: Props) {
   const [disabledKeys, setDisabledKeys] = useState<Set<string>>();
   const [active, setActive] = useState<string>("");
   const [ctrlDown, setCtrlDown] = useState(false);
   const inputRef = useRef<string[]>();
+  const allowedRef = useRef<string[]>();
+  const crRef = useRef<number>();
+  const wordRef = useRef<string>();
 
   function activeKeyHandler(e: KeyboardEvent) {
     setActive(e.key);
@@ -72,15 +83,33 @@ export default function keyboard({
 
   function submitHandler(e: KeyboardEvent) {
     if (e.key == "Enter") {
-      setCurrentRow((prev) => {
-        if (
-          prev < 5 &&
-          inputRef.current &&
-          inputRef.current[currentRow].length == 5
-        ) {
-          return prev + 1;
-        } else return prev;
-      });
+      if (allowedRef.current && inputRef.current && wordRef.current) {
+        if (allowedRef.current.length > 0) {
+          console.log(word);
+          setPattern(
+            Compare(wordRef.current, inputRef.current[currentRow].toLowerCase())
+          );
+          if (
+            wordRef.current.toLowerCase() ==
+            inputRef.current[currentRow].toLowerCase()
+          ) {
+            alert("Correct");
+          }
+          setCurrentRow((prev) => {
+            if (
+              prev < 5 &&
+              inputRef.current &&
+              inputRef.current[currentRow].length == 5
+            ) {
+              return prev + 1;
+            } else {
+              return prev;
+            }
+          });
+        } else {
+          console.log("word invalid");
+        }
+      }
     }
   }
 
@@ -119,6 +148,9 @@ export default function keyboard({
 
   useEffect(() => {
     inputRef.current = input;
+    allowedRef.current = allowed;
+    crRef.current = currentRow;
+    wordRef.current = word;
   });
 
   const layout = [
@@ -128,7 +160,7 @@ export default function keyboard({
   ];
 
   return (
-    <div className="grid mx-auto w-fit">
+    <div className="Keyboard grid my-auto mx-auto w-fit bottom-4">
       {layout.map((v, k) => {
         return (
           <div key={k} className="flex justify-center items-center">
@@ -137,6 +169,7 @@ export default function keyboard({
                 label="Enter"
                 disabled={false}
                 active={active == "Enter"}
+                input={input}
                 setInput={setInput}
                 setCurrentRow={setCurrentRow}
                 currentRow={currentRow}
@@ -163,7 +196,15 @@ export default function keyboard({
                 setInput={setInput}
                 currentRow={currentRow}
                 setCurrentRow={setCurrentRow}
-              />
+              >
+                <Image
+                  className="pointer-events-none"
+                  src="backspace.svg"
+                  width={24}
+                  height={24}
+                  alt="backspace"
+                />
+              </Key>
             )}
           </div>
         );

@@ -1,12 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
-import data from "@/lib/words.json";
 
 type Props = {
   input: string[];
   currentRow: number;
+  allowed: string[];
+  setAllowed: React.Dispatch<React.SetStateAction<string[]>>;
+  word: string;
+  allowed_list: string[];
+  pattern: number[];
 };
 
-export default function Grid({ input, currentRow }: Props) {
+export default function Grid({
+  input,
+  currentRow,
+  allowed,
+  setAllowed,
+  word,
+  allowed_list,
+  pattern,
+}: Props) {
   const grid = [
     ["", "", "", "", "", ""],
     ["", "", "", "", "", ""],
@@ -15,14 +27,17 @@ export default function Grid({ input, currentRow }: Props) {
     ["", "", "", "", "", ""],
   ];
 
-  const [allowed, setAllowed] = useState<string[]>(data.allowed);
   const [inputLength, setInputLength] = useState(input[currentRow].length);
-  const alref = useRef<string[]>();
-  const inref = useRef<string[]>();
+  const alRef = useRef<string[]>();
+  const inRef = useRef<string[]>();
+  const crRef = useRef<number>();
+  const wordRef = useRef<string>();
+  const gridRef = useRef<HTMLDivElement>(null);
 
   function listener(e: KeyboardEvent) {
     if (e.key == "²") {
-      console.log(alref.current, inref.current);
+      console.log(wordRef.current);
+      console.log(alRef.current, inRef.current?.at(crRef.current || 0));
     }
   }
   useEffect(() => {
@@ -39,7 +54,7 @@ export default function Grid({ input, currentRow }: Props) {
       setInputLength(inputL);
     } else {
       setAllowed(
-        data.allowed.filter(
+        allowed_list.filter(
           (word) =>
             input[currentRow].toLowerCase() ==
             word.slice(0, inputL).toLowerCase()
@@ -59,13 +74,40 @@ export default function Grid({ input, currentRow }: Props) {
   }, []);
 
   useEffect(() => {
-    alref.current = allowed;
-    inref.current = input;
+    alRef.current = allowed;
+    inRef.current = input;
+    crRef.current = currentRow;
+    wordRef.current = word;
   });
 
+  useEffect(() => {
+    const cr = crRef.current || currentRow;
+    const row = gridRef.current
+      ?.querySelectorAll("div")
+      .item(cr)
+      .querySelectorAll("div");
+
+    console.log(row?.item(0).innerHTML);
+    row?.forEach((e, k) => {
+      switch (pattern[k]) {
+        case 1:
+          e.style.backgroundColor = "green";
+          break;
+        case 2:
+          e.style.backgroundColor = "yellow";
+          break;
+        case 3:
+          e.style.backgroundColor = "red";
+          break;
+        default:
+          break;
+      }
+    });
+  }, [pattern]);
+
   return (
-    <div className="w-fit mx-auto my-5">
-      <div className="flex gap-x-1">
+    <div className="Grid overflow-y-scroll w-fit mx-auto my-5">
+      <div ref={gridRef} className="flex gap-x-1">
         {grid.map((v, k) => {
           return (
             <div key={k}>
@@ -73,7 +115,9 @@ export default function Grid({ input, currentRow }: Props) {
                 return (
                   <div
                     key={k_}
-                    className="w-20 h-20 rounded border-[1px] border-gray-400 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl"
+                    className={`w-16 h-16 transition-colors duration-100 md:w-20 md:h-20 rounded border-[1px] border-gray-400 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl ${
+                      k_ == currentRow ? "bg-indigo-50" : ""
+                    }`}
                   >
                     {input[k_][k]}
                   </div>

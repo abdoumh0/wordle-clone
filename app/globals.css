@@ -7,3 +7,21 @@
     box-shadow: 0px 2px 2px 1px rgb(0 0 0 / 20%);
   }
 }
+
+.Header {
+  display: grid;
+  grid-template-areas: "nothing title btn";
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.nothing {
+  grid-area: nothing;
+}
+
+.title {
+  grid-area: title;
+}
+
+.replay-btn {
+  grid-area: btn;
+}
