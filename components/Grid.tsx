@@ -99,13 +99,13 @@ export default function Grid({
         console.log(e.parentElement, e);
         switch (pattern[k]) {
           case 1:
-            e.style.backgroundColor = "green";
+            e.style.backgroundColor = "#27c53f";
             break;
           case 2:
-            e.style.backgroundColor = "yellow";
+            e.style.backgroundColor = "#e5c71a";
             break;
           case 3:
-            e.style.backgroundColor = "red";
+            e.style.backgroundColor = "#e61c19";
             break;
           default:
             break;
@@ -120,7 +120,7 @@ export default function Grid({
     ) as NodeListOf<HTMLDivElement>;
 
     grid?.forEach((e) => {
-      e.style.backgroundColor = "rgb(107 114 128)";
+      e.style.backgroundColor = "#6b7280";
     });
   }, [restart]);
 

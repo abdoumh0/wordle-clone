@@ -34,29 +34,7 @@ export default function Key({
           } lg:min-w-16 lg:min-h-10 min-w-8 min-h-12 lg:disabled:bg-gray-300 lg:disabled:shadow-none lg:disabled:translate-y-0 active:bg-[#e5e6e7] lg:active:shadow-sm lg:active:translate-y-0`}
           disabled={disabled}
           onClick={(e) => {
-            if (label == "Delete") {
-              setInput((prev) => {
-                return prev.map((v, k) => {
-                  if (k == currentRow) {
-                    return v.slice(0, v.length - 1);
-                  } else return v;
-                });
-              });
-            } else if (label == "Enter") {
-              setCurrentRow((prev) => {
-                if (input && input[currentRow].length == 5 && prev < 5) {
-                  return prev + 1;
-                } else return prev;
-              });
-            } else {
-              setInput((prev) => {
-                return prev.map((v, k) => {
-                  if (k == currentRow && v.length < 5) {
-                    return v + label.toUpperCase();
-                  } else return v;
-                });
-              });
-            }
+            window.dispatchEvent(new KeyboardEvent("keydown", { key: label }));
           }}
         >
           {children || label}

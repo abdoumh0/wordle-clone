@@ -93,7 +93,7 @@ export default function keyboard({
             wordRef.current.toLowerCase() ==
             inputRef.current[currentRow].toLowerCase()
           ) {
-            alert("Correct");
+            //TODO disable input + show score modal
           }
         } else {
           console.log("word invalid");
@@ -179,7 +179,7 @@ export default function keyboard({
             })}
             {k == 2 && (
               <Key
-                label="Delete"
+                label="Backspace"
                 disabled={false}
                 active={active == "Delete" || active == "Backspace"}
                 setInput={setInput}
