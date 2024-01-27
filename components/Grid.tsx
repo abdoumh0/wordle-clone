@@ -8,6 +8,7 @@ type Props = {
   word: string;
   allowed_list: string[];
   pattern: number[];
+  restart: boolean;
 };
 
 export default function Grid({
@@ -18,13 +19,15 @@ export default function Grid({
   word,
   allowed_list,
   pattern,
+  restart,
 }: Props) {
   const grid = [
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
   ];
 
   const [inputLength, setInputLength] = useState(input[currentRow].length);
@@ -82,44 +85,63 @@ export default function Grid({
 
   useEffect(() => {
     const cr = crRef.current || currentRow;
-    const row = gridRef.current
-      ?.querySelectorAll("div")
-      .item(cr)
-      .querySelectorAll("div");
+    const rows = gridRef.current?.children;
+    const row = gridRef.current?.childNodes.item(cr)
+      .childNodes as NodeListOf<HTMLDivElement>;
+    const ROW = gridRef.current?.querySelectorAll("div");
 
-    console.log(row?.item(0).innerHTML);
+    console.log(rows?.length);
+    console.log(row.length);
+    console.log(ROW?.length);
+    console.log(gridRef.current?.childElementCount);
     row?.forEach((e, k) => {
-      switch (pattern[k]) {
-        case 1:
-          e.style.backgroundColor = "green";
-          break;
-        case 2:
-          e.style.backgroundColor = "yellow";
-          break;
-        case 3:
-          e.style.backgroundColor = "red";
-          break;
-        default:
-          break;
+      if (true) {
+        console.log(e.parentElement, e);
+        switch (pattern[k]) {
+          case 1:
+            e.style.backgroundColor = "green";
+            break;
+          case 2:
+            e.style.backgroundColor = "yellow";
+            break;
+          case 3:
+            e.style.backgroundColor = "red";
+            break;
+          default:
+            break;
+        }
       }
     });
   }, [pattern]);
 
+  useEffect(() => {
+    const grid = gridRef.current?.querySelectorAll(
+      ".box"
+    ) as NodeListOf<HTMLDivElement>;
+
+    grid?.forEach((e) => {
+      e.style.backgroundColor = "rgb(107 114 128)";
+    });
+  }, [restart]);
+
   return (
     <div className="Grid overflow-y-scroll w-fit mx-auto my-5">
-      <div ref={gridRef} className="flex gap-x-1">
+      <div ref={gridRef}>
         {grid.map((v, k) => {
           return (
-            <div key={k}>
+            <div
+              key={k}
+              className={`flex gap-x-1 ${
+                k == currentRow ? "bg-indigo-50" : ""
+              }`}
+            >
               {v.map((v_, k_) => {
                 return (
                   <div
                     key={k_}
-                    className={`w-16 h-16 transition-colors duration-100 md:w-20 md:h-20 rounded border-[1px] border-gray-400 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl ${
-                      k_ == currentRow ? "bg-indigo-50" : ""
-                    }`}
+                    className={`box w-16 h-16 my-1 transition-colors bg-gray-500 duration-100 md:w-20 md:h-20 rounded border-[1px] border-gray-700 flex items-center justify-center font-bold text-white font-sans text-4xl`}
                   >
-                    {input[k_][k]}
+                    {input[k][k_]}
                   </div>
                 );
               })}

@@ -18,7 +18,7 @@ export function Compare(word: string, input: string): number[] {
   }
 
   for (let index = 0; index < LENGTH; index++) {
-    if (pattern[index] != 0) {
+    if (pattern[index] != 3) {
       continue;
     } else {
       for (let index_ = 0; index_ < LENGTH; index_++) {

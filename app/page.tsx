@@ -22,6 +22,16 @@ export default function page({}: Props) {
     console.log(pattern);
   }, [restart]);
 
+  useEffect(() => {
+    setCurrentRow((prev) => {
+      if (prev < 5 && input[currentRow].length == 5) {
+        return prev + 1;
+      } else {
+        return prev;
+      }
+    });
+  }, [pattern]);
+
   return (
     <div className="Page flex flex-col justify-between gap-3 h-[100dvh]">
       <Header toggleRestart={toggleRestart} />
@@ -33,6 +43,7 @@ export default function page({}: Props) {
         word={word}
         allowed_list={data.allowed}
         pattern={pattern}
+        restart={restart}
       />
       <Keyboard
         setInput={setInput}

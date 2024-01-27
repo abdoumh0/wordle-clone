@@ -95,17 +95,6 @@ export default function keyboard({
           ) {
             alert("Correct");
           }
-          setCurrentRow((prev) => {
-            if (
-              prev < 5 &&
-              inputRef.current &&
-              inputRef.current[currentRow].length == 5
-            ) {
-              return prev + 1;
-            } else {
-              return prev;
-            }
-          });
         } else {
           console.log("word invalid");
         }
