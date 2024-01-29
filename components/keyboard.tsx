@@ -12,6 +12,7 @@ type Props = {
   currentRow: number;
   allowed: string[];
   setPattern: React.Dispatch<React.SetStateAction<number[]>>;
+  disabled: Set<string>;
 };
 
 var isAlpha = function (ch: string) {
@@ -25,14 +26,15 @@ export default function keyboard({
   allowed,
   setPattern,
   word,
+  disabled,
 }: Props) {
-  const [disabledKeys, setDisabledKeys] = useState<Set<string>>();
   const [active, setActive] = useState<string>("");
   const [ctrlDown, setCtrlDown] = useState(false);
   const inputRef = useRef<string[]>();
   const allowedRef = useRef<string[]>();
   const crRef = useRef<number>();
   const wordRef = useRef<string>();
+  const disabledRef = useRef<Set<string>>();
 
   function activeKeyHandler(e: KeyboardEvent) {
     setActive(e.key);
@@ -139,7 +141,8 @@ export default function keyboard({
     allowedRef.current = allowed;
     crRef.current = currentRow;
     wordRef.current = word;
-  });
+    disabledRef.current = disabled;
+  }, [input, allowed, currentRow, word, disabled]);
 
   const layout = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -160,7 +163,7 @@ export default function keyboard({
                 <Key
                   key={k_}
                   label={v_}
-                  disabled={false}
+                  disabled={disabled.has(v_.toLowerCase())}
                   active={active.toLocaleUpperCase() == v_}
                 ></Key>
               );

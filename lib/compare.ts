@@ -38,3 +38,29 @@ export function Compare(word: string, input: string): number[] {
   );
   return pattern;
 }
+
+export function resolveDisabled(
+  pattern: number[],
+  word: string,
+  oldDisabled: Set<string>
+): Set<string> {
+  if (pattern.length != word.length) {
+    console.warn("keyboard.resolveDisabled() incoherent arguments");
+    return new Set();
+  }
+  word = word.toLowerCase();
+  const length = word.length;
+  let disabled = new Set(Array.from(word));
+
+  oldDisabled.forEach((charecter) => {
+    disabled.add(charecter);
+  });
+
+  for (let index = 0; index < word.length; index++) {
+    if (pattern[index] == 1 || pattern[index] == 2) {
+      disabled.delete(word[index]);
+    }
+  }
+
+  return disabled;
+}

@@ -129,7 +129,7 @@ export default function Grid({
             <div
               key={k} //TODO set border only when word is invalid
               //TODO change the allowed word list into a bigger one
-              className={`row flex gap-x-1 py-[1px] px-[2px] border-b-solid border-b-[4px] border-red-500 ${
+              className={`row flex gap-x-1 ${
                 k == currentRow ? "bg-indigo-50" : ""
               } `}
             >
