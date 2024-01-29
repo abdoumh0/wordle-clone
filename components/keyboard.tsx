@@ -20,7 +20,6 @@ var isAlpha = function (ch: string) {
 
 export default function keyboard({
   setInput,
-  setCurrentRow,
   currentRow,
   input,
   allowed,
@@ -154,15 +153,7 @@ export default function keyboard({
         return (
           <div key={k} className="flex justify-center items-center">
             {k == 2 && (
-              <Key
-                label="Enter"
-                disabled={false}
-                active={active == "Enter"}
-                input={input}
-                setInput={setInput}
-                setCurrentRow={setCurrentRow}
-                currentRow={currentRow}
-              />
+              <Key label="Enter" disabled={false} active={active == "Enter"} />
             )}
             {v.map((v_, k_) => {
               return (
@@ -171,9 +162,6 @@ export default function keyboard({
                   label={v_}
                   disabled={false}
                   active={active.toLocaleUpperCase() == v_}
-                  setInput={setInput}
-                  setCurrentRow={setCurrentRow}
-                  currentRow={currentRow}
                 ></Key>
               );
             })}
@@ -182,9 +170,6 @@ export default function keyboard({
                 label="Backspace"
                 disabled={false}
                 active={active == "Delete" || active == "Backspace"}
-                setInput={setInput}
-                currentRow={currentRow}
-                setCurrentRow={setCurrentRow}
               >
                 <Image
                   className="pointer-events-none"

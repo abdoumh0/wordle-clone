@@ -4,23 +4,10 @@ type Props = {
   disabled?: boolean;
   label: string;
   active: boolean;
-  setInput: React.Dispatch<React.SetStateAction<string[]>>;
-  input?: string[];
-  setCurrentRow: React.Dispatch<React.SetStateAction<number>>;
-  currentRow: number;
   children?: React.ReactNode;
 };
 
-export default function Key({
-  disabled,
-  label,
-  active,
-  input,
-  setInput,
-  setCurrentRow,
-  currentRow,
-  children,
-}: Props) {
+export default function Key({ disabled, label, active, children }: Props) {
   return (
     <div
       className={`flex m-[3px] bg-gray-50 border-[1px] lg:border-gray-300 justify-center align-middle lg:p-[5px] rounded`}
