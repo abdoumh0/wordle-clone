@@ -8,7 +8,7 @@
   }
 }
 
-.Header {
+.header {
   display: grid;
   grid-template-areas: "nothing title btn";
   grid-template-columns: 1fr 1fr 1fr;

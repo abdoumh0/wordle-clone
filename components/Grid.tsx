@@ -85,28 +85,25 @@ export default function Grid({
 
   useEffect(() => {
     const cr = crRef.current || currentRow;
-    const rows = gridRef.current?.children;
     const row = gridRef.current?.childNodes.item(cr)
       .childNodes as NodeListOf<HTMLDivElement>;
-    const ROW = gridRef.current?.querySelectorAll("div");
 
-    console.log(rows?.length);
-    console.log(row.length);
-    console.log(ROW?.length);
-    console.log(gridRef.current?.childElementCount);
     row?.forEach((e, k) => {
       if (true) {
-        console.log(e.parentElement, e);
         switch (pattern[k]) {
           case 1:
             e.style.backgroundColor = "#27c53f";
+            e.style.color = "#ffffff";
             break;
           case 2:
             e.style.backgroundColor = "#e5c71a";
+            e.style.color = "#ffffff";
             break;
           case 3:
             e.style.backgroundColor = "#e61c19";
+            e.style.color = "#ffffff";
             break;
+
           default:
             break;
         }
@@ -118,28 +115,29 @@ export default function Grid({
     const grid = gridRef.current?.querySelectorAll(
       ".box"
     ) as NodeListOf<HTMLDivElement>;
-
     grid?.forEach((e) => {
-      e.style.backgroundColor = "#6b7280";
+      e.style.backgroundColor = "#F9FAFB";
+      e.style.color = "#4B5563";
     });
   }, [restart]);
 
   return (
-    <div className="Grid overflow-y-scroll w-fit mx-auto my-5">
+    <div className="grid overflow-y-scroll w-fit mx-auto my-5 relative">
       <div ref={gridRef}>
         {grid.map((v, k) => {
           return (
             <div
-              key={k}
-              className={`flex gap-x-1 ${
+              key={k} //TODO set border only when word is invalid
+              //TODO change the allowed word list into a bigger one
+              className={`row flex gap-x-1 py-[1px] px-[2px] border-b-solid border-b-[4px] border-red-500 ${
                 k == currentRow ? "bg-indigo-50" : ""
-              }`}
+              } `}
             >
               {v.map((v_, k_) => {
                 return (
                   <div
                     key={k_}
-                    className={`box w-16 h-16 my-1 transition-colors bg-gray-500 duration-100 md:w-20 md:h-20 rounded border-[1px] border-gray-700 flex items-center justify-center font-bold text-white font-sans text-4xl`}
+                    className={`box w-16 h-16 my-1 transition-colors bg-gray-50 duration-100 md:w-20 md:h-20 border-[1px] border-gray-700 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl`}
                   >
                     {input[k][k_]}
                   </div>

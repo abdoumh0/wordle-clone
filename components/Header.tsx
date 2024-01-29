@@ -1,16 +1,27 @@
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import Backdrop from "./Backdrop";
+import Modal from "./Modal";
 
 type Props = {
   toggleRestart: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Header({ toggleRestart }: Props) {
+  const [isOpen, toggleOpen] = useState<boolean>(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <div className="Header grid">
-      <div className="nothing"></div>
+    <div className="header grid">
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleOpen((prev) => !prev);
+        }}
+        className="nothing"
+      >
+        {isOpen && <Backdrop toggleOpen={toggleOpen}>shite</Backdrop>}
+      </div>
       <div className="title mx-auto top-0 text-6xl text-center py-4 font-mono font-extrabold select-none">
         Wordle
       </div>
