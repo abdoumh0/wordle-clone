@@ -37,12 +37,6 @@ export default function Grid({
   const wordRef = useRef<string>();
   const gridRef = useRef<HTMLDivElement>(null);
 
-  function listener(e: KeyboardEvent) {
-    if (e.key == "²") {
-      console.log(wordRef.current);
-      console.log(alRef.current, inRef.current?.at(crRef.current || 0));
-    }
-  }
   useEffect(() => {
     const inputL = input[currentRow].length;
     if (inputLength < inputL) {
@@ -53,7 +47,6 @@ export default function Grid({
             word.slice(0, inputL).toLowerCase()
         )
       );
-      console.log("optimized lookup");
       setInputLength(inputL);
     } else {
       setAllowed(
@@ -65,16 +58,7 @@ export default function Grid({
       );
       setInputLength(inputL);
     }
-    console.log(allowed, input[currentRow]);
   }, [input[currentRow]]);
-
-  useEffect(() => {
-    window.addEventListener("keydown", listener);
-
-    return () => {
-      window.removeEventListener("keydown", listener);
-    };
-  }, []);
 
   useEffect(() => {
     alRef.current = allowed;

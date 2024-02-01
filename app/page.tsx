@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import data from "@/lib/words.json";
 import { resolveDisabled } from "@/lib/compare";
 import Backdrop from "@/components/Backdrop";
+import {} from "next/font/google";
 
 type Props = {};
 
@@ -61,7 +62,23 @@ export default function page({}: Props) {
     <div className="Page flex flex-col justify-between gap-3 h-[100dvh]">
       {open && (
         <Backdrop toggleOpen={toggleOpen} pause={pause}>
-          <div>{message}</div>
+          <div className="min-w-72 min-h-44 text-center flex flex-col justify-between items-center gap-y-5">
+            <h3 className="text-4xl font-bold font-mono">{message}</h3>
+            <div className="font-mono">
+              word was{" "}
+              <p className="text-indigo-700 font-mono text-2xl">{word}</p>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleOpen(false);
+                toggleRestart((prev) => !prev);
+              }}
+              className="rounded bg-green-400 text-center px-2 py-1 text-gray-100 font-mono font-bold"
+            >
+              Replay
+            </button>
+          </div>
         </Backdrop>
       )}
       <Header toggleRestart={toggleRestart} pause={pause} />

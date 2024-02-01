@@ -2,7 +2,6 @@ export function Compare(word: string, input: string): number[] {
   const LENGTH = word.length;
   let pattern: number[] = new Array(LENGTH);
   if (LENGTH != input.length) {
-    console.log("word length mismatch", word, input);
     return pattern;
   }
   let flags: boolean[] = new Array(LENGTH);
@@ -32,10 +31,6 @@ export function Compare(word: string, input: string): number[] {
     }
   }
 
-  console.log(`comparing \"${word}\" & \"${input}\": [${pattern}]`);
-  console.log(
-    "\t 1: right charecter; \t 2: right misplaced charecter; \t 3: doesnt exist; "
-  );
   return pattern;
 }
 

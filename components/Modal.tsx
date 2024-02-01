@@ -14,22 +14,6 @@ export default function Modal({ children, toggleOpen }: Props) {
       }}
       className="w-fit bg-white rounded min-w-28 min-h-32"
     >
-      <div className="flex justify-end items-center p-1">
-        <button
-          className="p-1"
-          onClick={(e) => {
-            toggleOpen(false);
-          }}
-        >
-          <Image
-            className="pointer-events-none"
-            src="x.svg"
-            alt="close"
-            width={12}
-            height={12}
-          />
-        </button>
-      </div>
       <div className="p-3">{children}</div>
     </div>
   );

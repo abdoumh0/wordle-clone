@@ -27,7 +27,7 @@ export default function Backdrop({
   return (
     <div
       ref={backdropRef}
-      className="w-[100dvw] h-[100dvh] bg-black/40 absolute z-50 flex justify-center align-middle items-center"
+      className="w-[100dvw] h-[100dvh] bg-black/40 fixed z-50 flex justify-center align-middle items-center"
       onClick={(e) => {
         e.stopPropagation();
         toggleOpen(false);

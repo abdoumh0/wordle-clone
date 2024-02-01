@@ -57,7 +57,6 @@ export default function keyboard({
 
   function keyDownHandler(e: KeyboardEvent) {
     if (isAlpha(e.key)) {
-      console.log(input);
       setInput((prev) => {
         return prev.map((v, k) => {
           if (k == crRef.current && v.length < 5) {
@@ -70,7 +69,6 @@ export default function keyboard({
 
   function CtrlDownHandler(e: KeyboardEvent) {
     if (e.key == "Control") {
-      console.log(input);
       setCtrlDown(true);
     }
   }
@@ -96,8 +94,10 @@ export default function keyboard({
   function submitHandler(e: KeyboardEvent) {
     if (e.key == "Enter") {
       if (allowedRef.current && inputRef.current && wordRef.current) {
-        if (allowedRef.current.length > 0) {
-          console.log(word);
+        if (
+          allowedRef.current.length > 0 &&
+          inputRef.current[crRef.current || currentRow].length == 5
+        ) {
           setPattern(
             Compare(
               wordRef.current,
@@ -114,13 +114,13 @@ export default function keyboard({
           } else if (
             crRef.current &&
             crRef.current == 5 &&
+            inputRef.current[crRef.current].length == 5 &&
             wordRef.current.toLowerCase() != inputRef.current[crRef.current]
           ) {
             setMessage("You Lose");
             onGameEnd(true);
           }
         } else {
-          console.log("word invalid");
         }
       }
     }
