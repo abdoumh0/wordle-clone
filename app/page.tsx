@@ -5,6 +5,7 @@ import Grid from "@/components/Grid";
 import Header from "@/components/Header";
 import data from "@/lib/words.json";
 import { resolveDisabled } from "@/lib/compare";
+import Backdrop from "@/components/Backdrop";
 
 type Props = {};
 
@@ -16,19 +17,10 @@ export default function page({}: Props) {
   const [allowed, setAllowed] = useState<string[]>([]);
   const [restart, toggleRestart] = useState(false);
   const [pattern, setPattern] = useState<number[]>([0, 0, 0, 0, 0]);
-
-  function Disable(character: string) {
-    setDisabled((prev) => {
-      return new Set(prev.add(character));
-    });
-  }
-
-  function Enable(character: string) {
-    setDisabled((prev) => {
-      prev.delete(character);
-      return new Set(prev);
-    });
-  }
+  const [paused, pause] = useState<boolean>(false);
+  const [open, toggleOpen] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   function EnableAll() {
     setDisabled(new Set());
@@ -39,8 +31,8 @@ export default function page({}: Props) {
     setCurrentRow(0);
     setInput(["", "", "", "", "", ""]);
     EnableAll();
-    console.log(pattern);
-    console.log(disabled.has("a"));
+    pause(false);
+    setGameOver(false);
   }, [restart]);
 
   useEffect(() => {
@@ -57,9 +49,22 @@ export default function page({}: Props) {
     setDisabled(resolveDisabled(pattern, input[currentRow], disabled));
   }, [pattern]);
 
+  useEffect(() => {
+    if (gameOver) {
+      const t = setTimeout(() => {
+        toggleOpen(true);
+      }, 400);
+    }
+  }, [gameOver]);
+
   return (
     <div className="Page flex flex-col justify-between gap-3 h-[100dvh]">
-      <Header toggleRestart={toggleRestart} />
+      {open && (
+        <Backdrop toggleOpen={toggleOpen} pause={pause}>
+          <div>{message}</div>
+        </Backdrop>
+      )}
+      <Header toggleRestart={toggleRestart} pause={pause} />
       <Grid
         input={input}
         currentRow={currentRow}
@@ -79,6 +84,10 @@ export default function page({}: Props) {
         word={word}
         setPattern={setPattern}
         disabled={disabled}
+        deactivate={paused}
+        onGameEnd={setGameOver}
+        gameOver={gameOver}
+        setMessage={setMessage}
       />
     </div>
   );

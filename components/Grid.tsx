@@ -137,7 +137,7 @@ export default function Grid({
                 return (
                   <div
                     key={k_}
-                    className={`box w-16 h-16 my-1 transition-colors bg-gray-50 duration-100 md:w-20 md:h-20 border-[1px] border-gray-700 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl`}
+                    className={`box w-16 h-16 my-1 transition-colors bg-gray-50 duration-500 md:w-20 md:h-20 border-[1px] border-gray-700 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl`}
                   >
                     {input[k][k_]}
                   </div>

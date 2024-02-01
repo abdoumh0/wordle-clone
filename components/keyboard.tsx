@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Key from "./Key";
 import Image from "next/image";
 import { Compare } from "@/lib/compare";
+import { on } from "events";
 
 type Props = {
   setInput: React.Dispatch<React.SetStateAction<string[]>>;
@@ -13,6 +14,10 @@ type Props = {
   allowed: string[];
   setPattern: React.Dispatch<React.SetStateAction<number[]>>;
   disabled: Set<string>;
+  deactivate: boolean;
+  gameOver: boolean;
+  onGameEnd: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 var isAlpha = function (ch: string) {
@@ -27,6 +32,10 @@ export default function keyboard({
   setPattern,
   word,
   disabled,
+  deactivate,
+  gameOver,
+  onGameEnd,
+  setMessage,
 }: Props) {
   const [active, setActive] = useState<string>("");
   const [ctrlDown, setCtrlDown] = useState(false);
@@ -35,6 +44,8 @@ export default function keyboard({
   const crRef = useRef<number>();
   const wordRef = useRef<string>();
   const disabledRef = useRef<Set<string>>();
+
+  let word_: string;
 
   function activeKeyHandler(e: KeyboardEvent) {
     setActive(e.key);
@@ -46,10 +57,10 @@ export default function keyboard({
 
   function keyDownHandler(e: KeyboardEvent) {
     if (isAlpha(e.key)) {
-      console.log(input[currentRow]);
+      console.log(input);
       setInput((prev) => {
         return prev.map((v, k) => {
-          if (k == currentRow && v.length < 5) {
+          if (k == crRef.current && v.length < 5) {
             return v + e.key.toUpperCase();
           } else return v;
         });
@@ -74,7 +85,7 @@ export default function keyboard({
     if (e.key == "Backspace" || e.key == "Delete") {
       setInput((prev) => {
         return prev.map((v, k) => {
-          if (k == currentRow) {
+          if (k == crRef.current) {
             return v.slice(0, v.length - 1);
           } else return v;
         });
@@ -88,13 +99,25 @@ export default function keyboard({
         if (allowedRef.current.length > 0) {
           console.log(word);
           setPattern(
-            Compare(wordRef.current, inputRef.current[currentRow].toLowerCase())
+            Compare(
+              wordRef.current,
+              inputRef.current[crRef.current || currentRow].toLowerCase()
+            )
           );
           if (
+            wordRef.current.length == 5 &&
             wordRef.current.toLowerCase() ==
-            inputRef.current[currentRow].toLowerCase()
+              inputRef.current[crRef.current || currentRow].toLowerCase()
           ) {
-            //TODO disable input + show score modal
+            setMessage("You Won");
+            onGameEnd(true);
+          } else if (
+            crRef.current &&
+            crRef.current == 5 &&
+            wordRef.current.toLowerCase() != inputRef.current[crRef.current]
+          ) {
+            setMessage("You Lose");
+            onGameEnd(true);
           }
         } else {
           console.log("word invalid");
@@ -111,7 +134,7 @@ export default function keyboard({
     window.addEventListener("focus", windowFocusHandler);
     window.addEventListener("keydown", CtrlDownHandler);
     window.addEventListener("keyup", CtrlUpHandler);
-    if (!ctrlDown) {
+    if (!ctrlDown && !deactivate && !gameOver) {
       window.addEventListener("keydown", keyDownHandler);
       window.addEventListener("keyup", keyUpHandler);
       window.addEventListener("keydown", backspaceHandler);
@@ -134,7 +157,7 @@ export default function keyboard({
       window.removeEventListener("keydown", activeKeyHandler);
       window.removeEventListener("focus", windowFocusHandler);
     };
-  }, [ctrlDown, currentRow]);
+  }, [ctrlDown, deactivate, gameOver]);
 
   useEffect(() => {
     inputRef.current = input;
@@ -142,6 +165,7 @@ export default function keyboard({
     crRef.current = currentRow;
     wordRef.current = word;
     disabledRef.current = disabled;
+    word_ = word;
   }, [input, allowed, currentRow, word, disabled]);
 
   const layout = [

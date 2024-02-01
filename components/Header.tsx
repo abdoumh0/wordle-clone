@@ -5,9 +5,10 @@ import Modal from "./Modal";
 
 type Props = {
   toggleRestart: React.Dispatch<React.SetStateAction<boolean>>;
+  pause: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Header({ toggleRestart }: Props) {
+export default function Header({ toggleRestart, pause }: Props) {
   const [isOpen, toggleOpen] = useState<boolean>(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -20,7 +21,11 @@ export default function Header({ toggleRestart }: Props) {
         }}
         className="nothing"
       >
-        {isOpen && <Backdrop toggleOpen={toggleOpen}>shite</Backdrop>}
+        {isOpen && (
+          <Backdrop toggleOpen={toggleOpen} pause={pause}>
+            shite
+          </Backdrop>
+        )}
       </div>
       <div className="title mx-auto top-0 text-6xl text-center py-4 font-mono font-extrabold select-none">
         Wordle
