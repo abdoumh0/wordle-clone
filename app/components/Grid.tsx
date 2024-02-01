@@ -1,3 +1,4 @@
+import { List } from "postcss/lib/list";
 import React, { useEffect, useState, useRef } from "react";
 
 type Props = {
@@ -65,7 +66,11 @@ export default function Grid({
     inRef.current = input;
     crRef.current = currentRow;
     wordRef.current = word;
-  });
+  }, [allowed, input, currentRow, word]);
+
+  useEffect(() => {
+    console.log(allowed);
+  }, [allowed]);
 
   useEffect(() => {
     const cr = crRef.current || currentRow;
@@ -106,7 +111,7 @@ export default function Grid({
   }, [restart]);
 
   return (
-    <div className="grid overflow-y-scroll w-fit mx-auto my-5 relative">
+    <div className="grid w-fit mx-auto  relative">
       <div ref={gridRef}>
         {grid.map((v, k) => {
           return (
@@ -121,7 +126,7 @@ export default function Grid({
                 return (
                   <div
                     key={k_}
-                    className={`box w-16 h-16 my-1 transition-colors bg-gray-50 duration-500 md:w-20 md:h-20 border-[1px] border-gray-700 flex items-center justify-center font-bold text-gray-600 font-sans text-4xl`}
+                    className={`box w-12 h-12 my-1 transition-colors bg-gray-50 duration-500 md:w-16 md:h-16 border-[1px] border-gray-700 flex items-center justify-center font-bold text-gray-600 font-sans text-2xl md:text-4xl`}
                   >
                     {input[k][k_]}
                   </div>

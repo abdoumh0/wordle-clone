@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from "react";
 import Key from "./Key";
 import Image from "next/image";
 import { Compare } from "@/app/lib/compare";
-import { on } from "events";
 
 type Props = {
   setInput: React.Dispatch<React.SetStateAction<string[]>>;
@@ -17,7 +16,7 @@ type Props = {
   deactivate: boolean;
   gameOver: boolean;
   onGameEnd: React.Dispatch<React.SetStateAction<boolean>>;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setWinStatus: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 var isAlpha = function (ch: string) {
@@ -35,7 +34,7 @@ export default function keyboard({
   deactivate,
   gameOver,
   onGameEnd,
-  setMessage,
+  setWinStatus,
 }: Props) {
   const [active, setActive] = useState<string>("");
   const [ctrlDown, setCtrlDown] = useState(false);
@@ -109,7 +108,7 @@ export default function keyboard({
             wordRef.current.toLowerCase() ==
               inputRef.current[crRef.current || currentRow].toLowerCase()
           ) {
-            setMessage("You Won");
+            setWinStatus(true);
             onGameEnd(true);
           } else if (
             crRef.current &&
@@ -117,7 +116,7 @@ export default function keyboard({
             inputRef.current[crRef.current].length == 5 &&
             wordRef.current.toLowerCase() != inputRef.current[crRef.current]
           ) {
-            setMessage("You Lose");
+            setWinStatus(false);
             onGameEnd(true);
           }
         } else {
@@ -165,7 +164,6 @@ export default function keyboard({
     crRef.current = currentRow;
     wordRef.current = word;
     disabledRef.current = disabled;
-    word_ = word;
   }, [input, allowed, currentRow, word, disabled]);
 
   const layout = [

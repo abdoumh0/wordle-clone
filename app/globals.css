@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 768px) {
   kbd > button {
     box-shadow: 0px 2px 2px 1px rgb(0 0 0 / 20%);
   }

@@ -10,8 +10,8 @@ export default function Header({ toggleRestart, pause }: Props) {
   const btnRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <div className="header grid">
-      <div></div>
+    <div className="header grid ">
+      <div className="nothing"></div>
       <div className="title mx-auto top-0 text-6xl text-center py-4 font-mono font-extrabold select-none">
         Wordle
       </div>

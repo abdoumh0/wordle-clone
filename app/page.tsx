@@ -4,9 +4,9 @@ import Keyboard from "./components/Keyboard";
 import Grid from "./components/Grid";
 import Header from "./components/Header";
 import data from "./lib/words.json";
+import words from "./lib/allowed.json";
 import { resolveDisabled } from "./lib/compare";
 import Backdrop from "./components/Backdrop";
-import {} from "next/font/google";
 
 type Props = {};
 
@@ -21,14 +21,14 @@ export default function page({}: Props) {
   const [paused, pause] = useState<boolean>(false);
   const [open, toggleOpen] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [win, setWinStatus] = useState<boolean>(false);
 
   function EnableAll() {
     setDisabled(new Set());
   }
 
   useEffect(() => {
-    setWord(data.allowed[Math.floor(Math.random() * data.allowed.length)]);
+    setWord(data.list[Math.floor(Math.random() * data.list.length)]);
     setCurrentRow(0);
     setInput(["", "", "", "", "", ""]);
     EnableAll();
@@ -62,11 +62,20 @@ export default function page({}: Props) {
     <div className="Page flex flex-col justify-between gap-3 h-[100dvh]">
       {open && (
         <Backdrop toggleOpen={toggleOpen} pause={pause}>
-          <div className="min-w-72 min-h-44 text-center flex flex-col justify-between items-center gap-y-5">
-            <h3 className="text-4xl font-bold font-mono">{message}</h3>
-            <div className="font-mono">
-              word was{" "}
-              <p className="text-indigo-700 font-mono text-2xl">{word}</p>
+          <div className="min-w-72 min-h-44 text-center font-mono flex flex-col justify-between items-center gap-y-5">
+            {win ? (
+              <>
+                <h2>Congratulations!</h2>
+                <h3 className="text-4xl font-bold">You won</h3>
+              </>
+            ) : (
+              <>
+                <h2>Better luck next time!</h2>
+                <h3 className="text-4xl font-bold">You lost</h3>
+              </>
+            )}
+            <div>
+              word was <p className="text-indigo-700 text-2xl">{word}</p>
             </div>
             <button
               onClick={(e) => {
@@ -74,7 +83,7 @@ export default function page({}: Props) {
                 toggleOpen(false);
                 toggleRestart((prev) => !prev);
               }}
-              className="rounded bg-green-400 text-center px-2 py-1 text-gray-100 font-mono font-bold"
+              className="rounded bg-green-400 text-center px-2 py-1 text-gray-100 font-bold"
             >
               Replay
             </button>
@@ -88,7 +97,7 @@ export default function page({}: Props) {
         allowed={allowed}
         setAllowed={setAllowed}
         word={word}
-        allowed_list={data.allowed}
+        allowed_list={words.allowed}
         pattern={pattern}
         restart={restart}
       />
@@ -104,7 +113,7 @@ export default function page({}: Props) {
         deactivate={paused}
         onGameEnd={setGameOver}
         gameOver={gameOver}
-        setMessage={setMessage}
+        setWinStatus={setWinStatus}
       />
     </div>
   );

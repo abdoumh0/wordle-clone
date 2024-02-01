@@ -12,17 +12,17 @@ export default function Key({ disabled, label, active, children }: Props) {
   useEffect(() => {}, [disabled]);
   return (
     <div
-      className={`flex m-[3px] bg-gray-50 border-[1px] lg:border-gray-300 justify-center align-middle lg:p-[5px] rounded overflow-hidden`}
+      className={`flex m-[3px] bg-gray-50 border-[1px] md:border-gray-300 justify-center align-middle md:p-[5px] rounded overflow-hidden`}
     >
       <kbd>
         <button
-          className={`flex lg:p-4 px-[10px] bg-gray-100 lg:shadow-gray-400 items-center align-middle justify-center text-center ${
-            active && !disabled ? "lg:shadow-sm " : "lg:translate-y-[-3px]"
-          } lg:min-w-16 lg:min-h-10 min-w-8 min-h-12 ${
+          className={`flex md:p-4 px-[10px] bg-gray-100 md:shadow-gray-400 items-center align-middle justify-center text-center ${
+            active && !disabled ? "md:shadow-sm " : "md:translate-y-[-3px]"
+          } md:min-w-14 md:min-h-8 min-w-6 min-h-10 ${
             disabled
-              ? "text-gray-600 bg-gray-300 shadow-none lg:translate-y-[0px]"
+              ? "text-gray-600 bg-gray-300 shadow-none md:translate-y-[0px]"
               : ""
-          } lg:disabled:translate-y-0 active:bg-[#e5e6e7] lg:active:translate-y-0 focus:outline-none`}
+          } md:disabled:translate-y-0 active:bg-[#e5e6e7] md:active:translate-y-0 focus:outline-none`}
           onMouseDown={(e) => {
             window.dispatchEvent(new KeyboardEvent("keydown", { key: label }));
           }}
