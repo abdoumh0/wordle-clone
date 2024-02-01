@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Key from "./Key";
 import Image from "next/image";
-import { Compare } from "@/lib/compare";
+import { Compare } from "@/app/lib/compare";
 import { on } from "events";
 
 type Props = {
