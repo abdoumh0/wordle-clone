@@ -54,7 +54,7 @@ export default function page({}: Props) {
     if (gameOver) {
       const t = setTimeout(() => {
         toggleOpen(true);
-      }, 400);
+      }, 200);
     }
   }, [gameOver]);
 
