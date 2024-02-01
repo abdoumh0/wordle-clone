@@ -68,9 +68,6 @@ export default function Grid({
     wordRef.current = word;
   }, [allowed, input, currentRow, word]);
 
-  useEffect(() => {
-    console.log(allowed);
-  }, [allowed]);
 
   useEffect(() => {
     const cr = crRef.current || currentRow;
