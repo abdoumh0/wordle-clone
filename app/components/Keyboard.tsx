@@ -44,8 +44,6 @@ export default function keyboard({
   const wordRef = useRef<string>();
   const disabledRef = useRef<Set<string>>();
 
-  let word_: string;
-
   function activeKeyHandler(e: KeyboardEvent) {
     setActive(e.key);
   }
