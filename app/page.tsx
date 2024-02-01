@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Keyboard from "@/components/Keyboard";
-import Grid from "@/components/Grid";
-import Header from "@/components/Header";
-import data from "@/lib/words.json";
-import { resolveDisabled } from "@/lib/compare";
-import Backdrop from "@/components/Backdrop";
+import Keyboard from "../components/Keyboard";
+import Grid from "../components/Grid";
+import Header from "../components/Header";
+import data from "../lib/words.json";
+import { resolveDisabled } from "../lib/compare";
+import Backdrop from "../components/Backdrop";
 import {} from "next/font/google";
 
 type Props = {};
