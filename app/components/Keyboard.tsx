@@ -36,7 +36,7 @@ export default function keyboard({
   onGameEnd,
   setWinStatus,
 }: Props) {
-  const [active, setActive] = useState<string>("");
+  const [active, setActive] = useState<Set<string>>(new Set());
   const [ctrlDown, setCtrlDown] = useState(false);
   const inputRef = useRef<string[]>();
   const allowedRef = useRef<string[]>();
@@ -45,11 +45,17 @@ export default function keyboard({
   const disabledRef = useRef<Set<string>>();
 
   function activeKeyHandler(e: KeyboardEvent) {
-    setActive(e.key);
+    setActive((prev) => {
+      prev.add(e.key.toLowerCase());
+      return new Set(prev);
+    });
   }
 
   function keyUpHandler(e: KeyboardEvent) {
-    setActive("");
+    setActive((prev) => {
+      prev.delete(e.key.toLowerCase());
+      return new Set(prev);
+    });
   }
 
   function keyDownHandler(e: KeyboardEvent) {
@@ -176,7 +182,11 @@ export default function keyboard({
         return (
           <div key={k} className="flex justify-center items-center">
             {k == 2 && (
-              <Key label="Enter" disabled={false} active={active == "Enter"} />
+              <Key
+                label="Enter"
+                disabled={false}
+                active={active.has("enter")}
+              />
             )}
             {v.map((v_, k_) => {
               return (
@@ -184,7 +194,7 @@ export default function keyboard({
                   key={k_}
                   label={v_}
                   disabled={disabled.has(v_.toLowerCase())}
-                  active={active.toLocaleUpperCase() == v_}
+                  active={active.has(v_.toLowerCase())}
                 ></Key>
               );
             })}
@@ -192,7 +202,7 @@ export default function keyboard({
               <Key
                 label="Backspace"
                 disabled={false}
-                active={active == "Delete" || active == "Backspace"}
+                active={active.has("delete") || active.has("backspace")}
               >
                 <Image
                   className="pointer-events-none"
