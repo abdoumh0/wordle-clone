@@ -17,13 +17,9 @@ export default function Key({ disabled, label, active, children }: Props) {
       <kbd>
         <button
           className={`flex md:p-4 px-[10px] bg-gray-100 md:shadow-gray-400 items-center align-middle justify-center text-center ${
-            active && !disabled
-              ? "md:shadow-sm md:bg-[#e5e6e7]"
-              : "md:translate-y-[-3px]"
+            active ? "md:shadow-sm md:bg-[#e5e6e7]" : "md:translate-y-[-3px]"
           } md:min-w-14 md:min-h-8 min-w-6 min-h-10 ${
-            disabled
-              ? "text-gray-600 bg-gray-300 shadow-none md:translate-y-[0px]"
-              : ""
+            disabled ? "text-gray-600 bg-gray-300" : ""
           } md:disabled:translate-y-0 active:bg-[#e5e6e7] md:active:translate-y-0 focus:outline-none`}
           onMouseDown={(e) => {
             window.dispatchEvent(new KeyboardEvent("keydown", { key: label }));

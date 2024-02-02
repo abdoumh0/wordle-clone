@@ -112,6 +112,7 @@ export default function keyboard({
             wordRef.current.toLowerCase() ==
               inputRef.current[crRef.current || currentRow].toLowerCase()
           ) {
+            setActive(new Set());
             setWinStatus(true);
             onGameEnd(true);
           } else if (
@@ -120,6 +121,7 @@ export default function keyboard({
             inputRef.current[crRef.current].length == 5 &&
             wordRef.current.toLowerCase() != inputRef.current[crRef.current]
           ) {
+            setActive(new Set());
             setWinStatus(false);
             onGameEnd(true);
           }
@@ -169,6 +171,8 @@ export default function keyboard({
     wordRef.current = word;
     disabledRef.current = disabled;
   }, [input, allowed, currentRow, word, disabled]);
+
+  useEffect(() => {}, [allowed]);
 
   const layout = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
