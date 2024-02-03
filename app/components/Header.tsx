@@ -1,27 +1,41 @@
 import Image from "next/image";
-import React, { useRef } from "react";
+import Link from "next/link";
+import React, { ReactElement } from "react";
 
 type Props = {
   toggleRestart: React.Dispatch<React.SetStateAction<boolean>>;
   pause: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Header({ toggleRestart, pause }: Props) {
-  const btnRef = useRef<HTMLButtonElement>(null);
-
+export default function Header({ toggleRestart }: Props) {
   return (
-    <div className="header grid ">
-      <div className="nothing"></div>
+    <div className="header grid">
+      <div className="nothing flex px-5 justify-start items-center">
+        <Link
+          href="https://github.com/abdoumh0/wordle-clone"
+          rel="noopener noreferrer"
+          target="_blank"
+          onClick={(e) => {
+            e.currentTarget.blur();
+          }}
+        >
+          <Image
+            src="github-mark.svg"
+            alt="github-logo"
+            width={32}
+            height={32}
+          />
+        </Link>
+      </div>
       <div className="title mx-auto top-0 text-6xl text-center py-4 font-mono font-extrabold select-none">
-        Wordle
+        Words
       </div>
       <div className="replay-btn flex justify-end items-center px-5">
         <button
-          ref={btnRef}
           className=" px-2 py-1 "
           onClick={(e) => {
             toggleRestart((prev) => !prev);
-            btnRef.current?.blur();
+            e.currentTarget.blur();
           }}
         >
           <Image

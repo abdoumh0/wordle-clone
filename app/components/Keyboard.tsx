@@ -177,7 +177,7 @@ export default function keyboard({
   const layout = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-    ["Z", "X", "C", "V", "B", "N", "M"],
+    ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Backspace"],
   ];
 
   return (
@@ -185,13 +185,6 @@ export default function keyboard({
       {layout.map((v, k) => {
         return (
           <div key={k} className="flex justify-center items-center">
-            {k == 2 && (
-              <Key
-                label="Enter"
-                disabled={false}
-                active={active.has("enter")}
-              />
-            )}
             {v.map((v_, k_) => {
               return (
                 <Key
@@ -199,24 +192,18 @@ export default function keyboard({
                   label={v_}
                   disabled={disabled.has(v_.toLowerCase())}
                   active={active.has(v_.toLowerCase())}
-                ></Key>
+                >
+                  {v_ == "Backspace" && (
+                    <Image
+                      src="backspace.svg"
+                      alt="backspace"
+                      width={24}
+                      height={24}
+                    />
+                  )}
+                </Key>
               );
             })}
-            {k == 2 && (
-              <Key
-                label="Backspace"
-                disabled={false}
-                active={active.has("delete") || active.has("backspace")}
-              >
-                <Image
-                  className="pointer-events-none"
-                  src="backspace.svg"
-                  width={24}
-                  height={24}
-                  alt="backspace"
-                />
-              </Key>
-            )}
           </div>
         );
       })}
