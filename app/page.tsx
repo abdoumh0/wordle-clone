@@ -31,6 +31,7 @@ export default function page({}: Props) {
     setWord(data.list[Math.floor(Math.random() * data.list.length)]);
     setCurrentRow(0);
     setInput(["", "", "", "", "", ""]);
+    setPattern([0, 0, 0, 0, 0]);
     EnableAll();
     pause(false);
     setGameOver(false);
@@ -54,7 +55,7 @@ export default function page({}: Props) {
     if (gameOver) {
       const t = setTimeout(() => {
         toggleOpen(true);
-      }, 200);
+      }, 1800);
     }
   }, [gameOver]);
 
