@@ -69,23 +69,19 @@ export default function Grid({
   }, [allowed, input, currentRow, word]);
 
   useEffect(() => {
-    const cr = crRef.current || currentRow;
     const grid = gridRef.current?.childNodes as NodeListOf<HTMLDivElement>;
-    const row = grid.item(cr).childNodes as NodeListOf<HTMLDivElement>;
+    const rows = grid.item(currentRow).childNodes as NodeListOf<HTMLDivElement>;
 
-    const observer = new MutationObserver(function (
-      mutationsList: MutationRecord[],
-      observer: MutationObserver
-    ) {
-      console.log("mo1");
-      const mutatedNode = mutationsList[0].target as HTMLDivElement;
-      mutatedNode.style.animationDelay = "0ms";
-      mutatedNode.classList.add("scale");
-      mutatedNode.onanimationend = () => {
-        mutatedNode.classList.remove("scale");
-        console.log("mo2");
+    const observer = new MutationObserver((mutationsList, observer) => {
+      const element = mutationsList[0].target as HTMLDivElement;
+      element.style.animationDelay = "0ms";
+      element.classList.add("scale");
+      element.onanimationstart = () => {}; // otherwise triggers grid color change on "scale" animation
+      element.onanimationend = () => {
+        element.classList.remove("scale");
       };
     });
+
     grid.forEach((row_) => {
       row_.childNodes.forEach((box) => {
         observer.observe(box, {
@@ -96,40 +92,40 @@ export default function Grid({
       });
     });
 
-    row?.forEach((e, k) => {
-      e.style.animationDelay = `${k * 300}ms`;
+    rows?.forEach((element, k) => {
+      element.style.animationDelay = `${k * 300}ms`;
       switch (pattern[k]) {
         case 1:
-          e.classList.add("flip");
-          e.onanimationstart = (event) => {
+          element.classList.add("flip");
+          element.onanimationstart = (event) => {
             setTimeout(() => {
-              e.style.backgroundColor = "#27c53f";
-              e.style.color = "#ffffff";
+              element.style.backgroundColor = "#27c53f";
+              element.style.color = "#ffffff";
             }, 250);
           };
           break;
         case 2:
-          e.classList.add("flip");
-          e.onanimationstart = (event) => {
+          element.classList.add("flip");
+          element.onanimationstart = (event) => {
             setTimeout(() => {
-              e.style.backgroundColor = "#e5c71a";
-              e.style.color = "#ffffff";
+              element.style.backgroundColor = "#e5c71a";
+              element.style.color = "#ffffff";
             }, 250);
           };
           break;
         case 3:
-          e.classList.add("flip");
-          e.onanimationstart = (event) => {
+          element.classList.add("flip");
+          element.onanimationstart = (event) => {
             setTimeout(() => {
-              e.style.backgroundColor = "#e61c19";
-              e.style.color = "#ffffff";
+              element.style.backgroundColor = "#e61c19";
+              element.style.color = "#ffffff";
             }, 250);
           };
           break;
 
         default:
-          e.style.backgroundColor = "#F9FAFB";
-          e.style.color = "#4B5563";
+          element.style.backgroundColor = "#F9FAFB";
+          element.style.color = "#4B5563";
           break;
       }
     });
@@ -143,11 +139,11 @@ export default function Grid({
     const grid = gridRef.current?.querySelectorAll(
       ".box"
     ) as NodeListOf<HTMLDivElement>;
-    grid?.forEach((e) => {
-      e.style.backgroundColor = "#F9FAFB";
-      e.style.color = "#4B5563";
-      e.classList.remove("flip");
-      e.classList.remove("scale");
+    grid?.forEach((element) => {
+      element.style.backgroundColor = "#F9FAFB";
+      element.style.color = "#4B5563";
+      element.classList.remove("flip");
+      element.classList.remove("scale");
     });
   }, [restart]);
 
