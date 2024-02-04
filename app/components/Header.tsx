@@ -24,6 +24,7 @@ export default function Header({ toggleRestart }: Props) {
             alt="github-logo"
             width={32}
             height={32}
+            className="pointer-events-none"
           />
         </Link>
       </div>

@@ -199,6 +199,7 @@ export default function keyboard({
                       alt="backspace"
                       width={24}
                       height={24}
+                      className="pointer-events-none"
                     />
                   )}
                 </Key>
