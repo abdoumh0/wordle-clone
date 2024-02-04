@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { ReactElement } from "react";
+import React from "react";
 
 type Props = {
   toggleRestart: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,8 +9,8 @@ type Props = {
 
 export default function Header({ toggleRestart }: Props) {
   return (
-    <div className="header grid">
-      <div className="nothing flex px-5 justify-start items-center">
+    <div className="flex justify-between w-full">
+      <div className="flex px-5 items-center">
         <Link
           href="https://github.com/abdoumh0/wordle-clone"
           rel="noopener noreferrer"
@@ -28,19 +28,22 @@ export default function Header({ toggleRestart }: Props) {
           />
         </Link>
       </div>
-      <div className="title mx-auto top-0 text-6xl text-center py-4 font-mono font-extrabold select-none">
+      <div className="text-6xl pt-3 font-mono font-extrabold select-none">
         Words
       </div>
-      <div className="replay-btn flex justify-end items-center px-5">
+      <div className="replay-btn flex items-center px-5">
         <button
-          className=" px-2 py-1 "
+          className="px-2 py-1"
           onClick={(e) => {
             toggleRestart((prev) => !prev);
             e.currentTarget.blur();
           }}
         >
           <Image
-            className="pointer-events-none active:animate-spin"
+            onMouseDown={(e) => {
+              e.currentTarget.classList.add("image");
+            }}
+            className="pointer-events-none"
             src="replay.svg"
             alt="replay"
             width={32}

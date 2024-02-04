@@ -10,6 +10,8 @@ type Props = {
   allowed_list: string[];
   pattern: number[];
   restart: boolean;
+  invalidWordSignal: boolean;
+  toggleInvalidWordSignal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Grid({
@@ -21,6 +23,8 @@ export default function Grid({
   allowed_list,
   pattern,
   restart,
+  invalidWordSignal,
+  toggleInvalidWordSignal,
 }: Props) {
   const grid = [
     ["", "", "", "", ""],
@@ -117,7 +121,7 @@ export default function Grid({
           element.classList.add("flip");
           element.onanimationstart = (event) => {
             setTimeout(() => {
-              element.style.backgroundColor = "#e61c19";
+              element.style.backgroundColor = "#474747";
               element.style.color = "#ffffff";
             }, 250);
           };
@@ -136,6 +140,22 @@ export default function Grid({
   }, [pattern]);
 
   useEffect(() => {
+    const rows = gridRef.current?.childNodes as NodeListOf<HTMLDivElement>;
+    rows.forEach((row, k) => {
+      const boxs = row.childNodes as NodeListOf<HTMLDivElement>;
+      if (k == currentRow) {
+        boxs.forEach((box) => {
+          box.style.borderWidth = "2px";
+        });
+      } else {
+        boxs.forEach((box) => {
+          box.style.borderWidth = "1px";
+        });
+      }
+    });
+  }, [currentRow]);
+
+  useEffect(() => {
     const grid = gridRef.current?.querySelectorAll(
       ".box"
     ) as NodeListOf<HTMLDivElement>;
@@ -147,6 +167,19 @@ export default function Grid({
     });
   }, [restart]);
 
+  useEffect(() => {
+    if (invalidWordSignal) {
+      const row = gridRef.current?.childNodes.item(
+        currentRow
+      ) as HTMLDivElement;
+      row.classList.add("shake");
+      row.onanimationend = () => {
+        row.classList.remove("shake");
+        toggleInvalidWordSignal(false);
+      };
+    }
+  }, [invalidWordSignal]);
+
   return (
     <div className="grid w-fit mx-auto  relative">
       <div ref={gridRef}>
@@ -155,9 +188,7 @@ export default function Grid({
             <div
               key={k} //TODO set border only when word is invalid
               //TODO change the allowed word list into a bigger one
-              className={`row flex gap-x-1 ${
-                k == currentRow ? "bg-indigo-50" : ""
-              } `}
+              className={`row flex gap-x-1`}
             >
               {v.map((v_, k_) => {
                 return (

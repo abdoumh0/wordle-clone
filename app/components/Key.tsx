@@ -11,7 +11,7 @@ type Props = {
 export default function Key({ disabled, label, active, children }: Props) {
   return (
     <div
-      className={`flex m-[3px] bg-gray-50 border-[1px] md:border-gray-300 justify-center align-middle md:p-[5px] rounded overflow-hidden`}
+      className={`flex m-[3px] transition-colors duration-75 bg-gray-50 border-[1px] md:border-gray-300 justify-center align-middle md:p-[5px] rounded overflow-hidden`}
     >
       <kbd>
         <button

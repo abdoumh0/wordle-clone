@@ -22,6 +22,7 @@ export default function page({}: Props) {
   const [open, toggleOpen] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [win, setWinStatus] = useState<boolean>(false);
+  const [invalidWordSignal, toggleInvalidWordSignal] = useState<boolean>(false);
 
   function EnableAll() {
     setDisabled(new Set());
@@ -60,7 +61,7 @@ export default function page({}: Props) {
   }, [gameOver]);
 
   return (
-    <div className="Page flex flex-col justify-between gap-3 h-[100dvh]">
+    <div className="flex flex-col justify-between items-center gap-3 h-[100dvh]">
       {open && (
         <Backdrop toggleOpen={toggleOpen} pause={pause}>
           <div className="min-w-72 min-h-44 text-center font-mono flex flex-col justify-between items-center gap-y-5">
@@ -101,6 +102,8 @@ export default function page({}: Props) {
         allowed_list={words.allowed}
         pattern={pattern}
         restart={restart}
+        invalidWordSignal={invalidWordSignal}
+        toggleInvalidWordSignal={toggleInvalidWordSignal}
       />
       <Keyboard
         setInput={setInput}
@@ -115,6 +118,7 @@ export default function page({}: Props) {
         onGameEnd={setGameOver}
         gameOver={gameOver}
         setWinStatus={setWinStatus}
+        toggleInvalidWordSignal={toggleInvalidWordSignal}
       />
     </div>
   );

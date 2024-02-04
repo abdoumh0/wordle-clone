@@ -12,6 +12,7 @@ type Props = {
   currentRow: number;
   allowed: string[];
   setPattern: React.Dispatch<React.SetStateAction<number[]>>;
+  toggleInvalidWordSignal: React.Dispatch<React.SetStateAction<boolean>>;
   disabled: Set<string>;
   deactivate: boolean;
   gameOver: boolean;
@@ -29,6 +30,7 @@ export default function keyboard({
   input,
   allowed,
   setPattern,
+  toggleInvalidWordSignal,
   word,
   disabled,
   deactivate,
@@ -97,10 +99,9 @@ export default function keyboard({
   function submitHandler(e: KeyboardEvent) {
     if (e.key == "Enter") {
       if (allowedRef.current && inputRef.current && wordRef.current) {
-        if (
-          allowedRef.current.length > 0 &&
-          inputRef.current[crRef.current || currentRow].length == 5
-        ) {
+        if (allowedRef.current.length == 0) {
+          toggleInvalidWordSignal(true);
+        } else if (inputRef.current[crRef.current || currentRow].length == 5) {
           setPattern(
             Compare(
               wordRef.current,
@@ -181,7 +182,7 @@ export default function keyboard({
   ];
 
   return (
-    <div className="Keyboard grid my-auto mx-auto w-fit bottom-4">
+    <div className="Keyboard grid mb-5 w-fit bottom-4">
       {layout.map((v, k) => {
         return (
           <div key={k} className="flex justify-center items-center">
