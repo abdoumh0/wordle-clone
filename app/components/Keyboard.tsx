@@ -182,7 +182,7 @@ export default function keyboard({
   ];
 
   return (
-    <div className="Keyboard grid mb-5 w-fit bottom-4">
+    <div className="Keyboard grid mb-5 md:w-fit w-[95%]">
       {layout.map((v, k) => {
         return (
           <div key={k} className="flex justify-center items-center">

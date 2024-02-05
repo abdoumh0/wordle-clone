@@ -8,6 +8,23 @@
   }
 }
 
+.header {
+  grid-template-areas: "github logo replay";
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.github {
+  grid-area: github;
+}
+
+.logo {
+  grid-area: logo;
+}
+
+.replay {
+  grid-area: replay;
+}
+
 .flip {
   animation: flip 500ms ease-in forwards;
 }

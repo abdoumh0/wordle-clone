@@ -86,8 +86,8 @@ export default function Grid({
       };
     });
 
-    grid.forEach((row_) => {
-      row_.childNodes.forEach((box) => {
+    grid.forEach((row) => {
+      row.childNodes.forEach((box) => {
         observer.observe(box, {
           characterData: true,
           attributes: false,
