@@ -1,4 +1,3 @@
-import { List } from "postcss/lib/list";
 import React, { useEffect, useState, useRef } from "react";
 
 type Props = {
@@ -96,41 +95,29 @@ export default function Grid({
       });
     });
 
+    const bgs = pattern.map((v) => {
+      switch (v) {
+        case 1:
+          return "#27c53f";
+        case 2:
+          return "#e5c71a";
+        case 3:
+          return "#474747";
+        default:
+          return "#F9FAFB";
+      }
+    });
+
     rows?.forEach((element, k) => {
       element.style.animationDelay = `${k * 300}ms`;
-      switch (pattern[k]) {
-        case 1:
-          element.classList.add("flip");
-          element.onanimationstart = (event) => {
-            setTimeout(() => {
-              element.style.backgroundColor = "#27c53f";
-              element.style.color = "#ffffff";
-            }, 250);
-          };
-          break;
-        case 2:
-          element.classList.add("flip");
-          element.onanimationstart = (event) => {
-            setTimeout(() => {
-              element.style.backgroundColor = "#e5c71a";
-              element.style.color = "#ffffff";
-            }, 250);
-          };
-          break;
-        case 3:
-          element.classList.add("flip");
-          element.onanimationstart = (event) => {
-            setTimeout(() => {
-              element.style.backgroundColor = "#474747";
-              element.style.color = "#ffffff";
-            }, 250);
-          };
-          break;
-
-        default:
-          element.style.backgroundColor = "#F9FAFB";
-          element.style.color = "#4B5563";
-          break;
+      if (pattern[k] != 0) {
+        element.classList.add("flip");
+        element.onanimationstart = (event) => {
+          setTimeout(() => {
+            element.style.backgroundColor = bgs[k];
+            element.style.color = "#ffffff";
+          }, 250);
+        };
       }
     });
 
@@ -140,19 +127,18 @@ export default function Grid({
   }, [pattern]);
 
   useEffect(() => {
-    const rows = gridRef.current?.childNodes as NodeListOf<HTMLDivElement>;
-    rows.forEach((row, k) => {
-      const boxs = row.childNodes as NodeListOf<HTMLDivElement>;
-      if (k == currentRow) {
-        boxs.forEach((box) => {
-          box.style.borderWidth = "2px";
-        });
-      } else {
-        boxs.forEach((box) => {
-          box.style.borderWidth = "1px";
-        });
-      }
+    const row = gridRef.current?.childNodes.item(currentRow)
+      .childNodes as NodeListOf<HTMLDivElement>;
+    row.forEach((box) => {
+      box.style.borderWidth = "2px";
     });
+    if (currentRow > 0) {
+      const prevRow = gridRef.current?.childNodes.item(currentRow - 1)
+        .childNodes as NodeListOf<HTMLDivElement>;
+      prevRow.forEach((box) => {
+        box.style.borderWidth = "1px";
+      });
+    }
   }, [currentRow]);
 
   useEffect(() => {
@@ -185,11 +171,7 @@ export default function Grid({
       <div ref={gridRef}>
         {grid.map((v, k) => {
           return (
-            <div
-              key={k} //TODO set border only when word is invalid
-              //TODO change the allowed word list into a bigger one
-              className={`row flex gap-x-1`}
-            >
+            <div key={k} className={`row flex gap-x-1`}>
               {v.map((v_, k_) => {
                 return (
                   <div
