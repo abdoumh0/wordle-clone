@@ -104,7 +104,7 @@ export default function Grid({
         case 3:
           return "#474747";
         default:
-          return "#F9FAFB";
+          return "#f9fAfB";
       }
     });
 
@@ -112,7 +112,7 @@ export default function Grid({
       element.style.animationDelay = `${k * 300}ms`;
       if (pattern[k] != 0) {
         element.classList.add("flip");
-        element.onanimationstart = (event) => {
+        element.onanimationstart = (e) => {
           setTimeout(() => {
             element.style.backgroundColor = bgs[k];
             element.style.color = "#ffffff";
@@ -142,14 +142,18 @@ export default function Grid({
   }, [currentRow]);
 
   useEffect(() => {
-    const grid = gridRef.current?.querySelectorAll(
-      ".box"
-    ) as NodeListOf<HTMLDivElement>;
-    grid?.forEach((element) => {
-      element.style.backgroundColor = "#F9FAFB";
-      element.style.color = "#4B5563";
-      element.classList.remove("flip");
-      element.classList.remove("scale");
+    const rows = gridRef.current?.childNodes as NodeListOf<HTMLDivElement>;
+    rows.forEach((row, k) => {
+      const boxes = row.childNodes as NodeListOf<HTMLDivElement>;
+      boxes.forEach((box) => {
+        if (k != 0) {
+          box.style.borderWidth = "1px";
+        }
+        box.style.backgroundColor = "#F9FAFB";
+        box.style.color = "#4B5563";
+        box.classList.remove("flip");
+        box.classList.remove("scale");
+      });
     });
   }, [restart]);
 

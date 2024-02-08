@@ -40,7 +40,6 @@ export function resolveDisabled(
   oldDisabled: Set<string>
 ): Set<string> {
   if (pattern.length != word.length) {
-    console.warn("keyboard.resolveDisabled() incoherent arguments");
     return new Set();
   }
   word = word.toLowerCase();
