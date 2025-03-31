@@ -6,3 +6,4 @@ no extra libraries needed, just a basic nextJS app,
 $ npm install
 $ npm run dev
 ```
+[app](https://wordle-sand-theta.vercel.app/)
